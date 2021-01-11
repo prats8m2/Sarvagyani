@@ -18,7 +18,7 @@ class App extends React.Component {
   handleChange(event) {
     console.log(event);
     const { petition, question, ansMode, count, answer } = this.state;
-    const PETITION = ['S', 'a', 'r', 'v', 'a', 'g', 'y', 'a', 'n', 'i', ' ', 'p', 'l', 'e', 'a', 's', 'e', ' ', 't', 'e', 'l','',''];
+    const PETITION = ['S', 'a', 'r', 'v', 'a', 'g', 'y', 'a', 'n', 'i', ' ', 'p', 'l', 'e', 'a', 's', 'e', ' ', 't', 'e', 'l','l',''];
     console.log({ ansMode, answer });
     if (event.nativeEvent.data != null) {
       if (event.target.value ) {
