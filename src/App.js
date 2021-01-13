@@ -4,8 +4,13 @@ import Modal from 'react-modal';
 
 class App extends React.Component {
 
+  constructor(props){
+    super(props);
+    //CREATE A REF TO SET AUTO FOCUS ON PETITION
+    this.petitionRef = React.createRef();
+  }
   componentDidMount(){
-    console.info("Don't try to debug me, You will get nothing");
+    console.info("Don't try to debug me, You will get nothing! : Sarvagyani");
   }
   
   //INTIALIZE ALL THE STATE
@@ -25,7 +30,6 @@ class App extends React.Component {
   //FUNCTION TO HANDLE THE INPUT OF PETITION
   handleChange(event) {
     const { ansMode, count, answer, PETITION } = this.state;
-    console.log({answer,ansMode,count});
     if (event.nativeEvent.data != null && event.target.value) {//CHECK IF SOME KEY PRESSED OR NOT AND IF PETITION IS EMPTY OR NOT
       if (count < PETITION.length)// CHECK IF PETION LENGTH IS NOT MORE THEN ORIGINAL PETITION
       if (event.nativeEvent.data === ".") {//CHECK IF . IS PRESSED
@@ -83,7 +87,10 @@ class App extends React.Component {
   //FUNCTION TO SHOW ANSWER
   showAnswer = async () => {
     const { answer, question } = this.state;
-    
+    //SET PETIITON TO AUTO FOCUS
+    this.petitionRef.current.focus();
+
+    //SEND ANALYTICS DATA
     window.analytics.track("At work", {
         question: question,
         answer: answer
@@ -115,7 +122,8 @@ class App extends React.Component {
         displayAnswer: true,
         loader: false,
         petition: "",
-        question: ""
+        question: "",
+        count: 0
       })
     }
     else{//IF ANSWER IS NOT PRESENT
@@ -128,9 +136,11 @@ class App extends React.Component {
         loader: false,
         lastAnswer: index,
         petition: "",
-        question: ""
+        question: "",
+        count: 0
       })
     }
+    // document.getElementById("petitionId").autofocus;
   }
   
   
@@ -201,7 +211,7 @@ class App extends React.Component {
         contentLabel="Example Modal"
       >
         <center>
-          <img className="logo" src="logoMain.jpeg"></img>
+          <img className="logo" src="logoMain.jpeg" alt="Sarvgyani Logo"></img>
           <h1 style={{ color: 'red' }}>Sarvagyani</h1>
           <h3 style={{ color: 'red'}}>How to use?</h3>
         <br /><br />
@@ -216,7 +226,7 @@ class App extends React.Component {
             <li>You can't use Sarvagyani on mobile. Use a laptop only.</li>
           </ul>
           <center>
-          <h3 onKeyPress={() => this.toggleModal()} tabindex="1" style={{ color: 'green', textDecoration: 'underline' }}>Let's Play</h3>
+          <h3 onKeyPress={() => this.toggleModal()} tabIndex="1" style={{ color: 'green', textDecoration: 'underline' }}>Let's Play</h3>
           </center>
       </Modal>
     );
@@ -225,15 +235,15 @@ class App extends React.Component {
       <div className="underlay-photo">
         {howToUse}
         <center>
-        <img  className="logo" src="logoMain.jpeg"></img>
+        <img  className="logo" src="logoMain.jpeg" alt="Sarvagyani Logo"></img>
         <h1 style={{color: 'red'}}>Sarvagyani</h1>
           </center>
         <form className="login-form">
-          <input type="text" className="petition" tabindex="1" autoFocus={true} onChange={(e) => this.handleChange(e)} value={petition} placeholder="Request" />
-          <input type="text" className="question" tabindex="2" onChange={(e) => this.handleChangeQuestion(e)} value={question} placeholder="Ask Question" />
+          <input type="text" className="petition" ref={this.petitionRef} tabIndex="1" autoFocus={true} onChange={(e) => this.handleChange(e)} value={petition} placeholder="Request" />
+          <input type="text" className="question" tabIndex="2" onChange={(e) => this.handleChangeQuestion(e)} value={question} placeholder="Ask Question" />
         </form>
-        <input type="button" name="submit" value="Answer" tabindex="3" onClick={() => this.showAnswer()} className="showAnswer" disabled={!petition || !question || displayAnswer} />
-        <div className="footer-title">Sarvagyani © 2021<br /><a tabindex="4" onKeyPress={() => this.toggleModal()} className="howToUse">How to use?</a></div>
+        <input type="button" name="submit" value="Answer" tabIndex="3" onClick={() => this.showAnswer()} className="showAnswer" disabled={!petition || !question || displayAnswer} />
+        <div className="footer-title">Sarvagyani © 2021<br /><span tabIndex="4" onKeyPress={() => this.toggleModal()} className="howToUse">How to use?</span></div>
         {
           loader ?
             <center>
