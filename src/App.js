@@ -47,7 +47,7 @@ class App extends React.Component {
           })
         }
         else {//SET NORMAL KEY BEHAVIOUR
-          this.setState({ petition: event.target.value, count: count + 1, showAnswer: false});
+          this.setState({ petition: event.target.value, count: count + 1, displayAnswer: false});
         }
       }
     }
@@ -86,15 +86,26 @@ class App extends React.Component {
   
   //FUNCTION TO SHOW ANSWER
   showAnswer = async () => {
-    const { answer, question } = this.state;
+    const { answer, question, petition } = this.state;
     //SET PETIITON TO AUTO FOCUS
     this.petitionRef.current.focus();
-
+    
     //SEND ANALYTICS DATA
     window.analytics.track("At work", {
-        question: question,
-        answer: answer
-      });;
+      question: question,
+      answer: answer
+    });;
+    
+    if (petition != "Sarvagyani please tell"){
+      this.setState({
+        answer : "Wrong input in request!",
+        displayAnswer : true,
+        petition: "",
+        question: "",
+        count: 0
+      })
+      return;              
+    }
     
     const GYAN = [//RANDOM STRINGS TO USE WHEN NO ANSWER IS PRESENT
       "Its time to meditate, I will answer later.",
@@ -175,7 +186,7 @@ class App extends React.Component {
   handleChangeQuestion(event) {
     this.setState({
       question: event.target.value,
-      showAnswer: false
+      displayAnswer: false
     })
   }
   
