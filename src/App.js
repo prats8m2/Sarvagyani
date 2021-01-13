@@ -30,6 +30,11 @@ class App extends React.Component {
   //FUNCTION TO HANDLE THE INPUT OF PETITION
   handleChange(event) {
     const { ansMode, count, answer, PETITION } = this.state;
+    if (answer === "Wrong input in request!"){
+      this.setState({
+        answer : ""
+      })
+    }
     if (event.nativeEvent.data != null && event.target.value) {//CHECK IF SOME KEY PRESSED OR NOT AND IF PETITION IS EMPTY OR NOT
       if (count < PETITION.length)// CHECK IF PETION LENGTH IS NOT MORE THEN ORIGINAL PETITION
       if (event.nativeEvent.data === ".") {//CHECK IF . IS PRESSED
