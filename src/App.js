@@ -113,7 +113,9 @@ class App extends React.Component {
       await this.timeout(this.getRndInteger(3000, 5000)); //ADD RANDOM DELAY OF 3 TO 5 SEC FOR LOADER
       this.setState({
         displayAnswer: true,
-        loader: false
+        loader: false,
+        petition: "",
+        question: ""
       })
     }
     else{//IF ANSWER IS NOT PRESENT
