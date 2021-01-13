@@ -7,7 +7,7 @@ class App extends React.Component {
   componentDidMount(){
     console.info("Don't try to debug me, You will get nothing");
   }
-
+  
   //INTIALIZE ALL THE STATE
   state = {
     petition: "",//FOR PETITION
@@ -20,39 +20,39 @@ class App extends React.Component {
     PETITION :['S', 'a', 'r', 'v', 'a', 'g', 'y', 'a', 'n', 'i', ' ', 'p', 'l', 'e', 'a', 's', 'e', ' ', 't', 'e', 'l', 'l', ''],
     modalIsOpen: false
   };
-
-
+  
+  
   //FUNCTION TO HANDLE THE INPUT OF PETITION
   handleChange(event) {
     const { ansMode, count, answer, PETITION } = this.state;
     console.log({answer,ansMode,count});
     if (event.nativeEvent.data != null && event.target.value) {//CHECK IF SOME KEY PRESSED OR NOT AND IF PETITION IS EMPTY OR NOT
       if (count < PETITION.length)// CHECK IF PETION LENGTH IS NOT MORE THEN ORIGINAL PETITION
-        if (event.nativeEvent.data === ".") {//CHECK IF . IS PRESSED
-          this.setState({//TOGGLE ANSWER MODE
-            ansMode: !ansMode
-          }, () => {
-            this.setDefaultPetition();//SET DEFAULT PETITION
+      if (event.nativeEvent.data === ".") {//CHECK IF . IS PRESSED
+        this.setState({//TOGGLE ANSWER MODE
+          ansMode: !ansMode
+        }, () => {
+          this.setDefaultPetition();//SET DEFAULT PETITION
+        })
+      }
+      else {
+        if (ansMode) {//IF ANSWER MODE IS ON
+          this.setDefaultPetition();//SET DEFAULT PETITION
+          this.setState({//ADD ANSWER 
+            answer: answer + event.nativeEvent.data
           })
         }
-        else {
-          if (ansMode) {//IF ANSWER MODE IS ON
-            this.setDefaultPetition();//SET DEFAULT PETITION
-            this.setState({//ADD ANSWER 
-              answer: answer + event.nativeEvent.data
-            })
-          }
-          else {//SET NORMAL KEY BEHAVIOUR
-            this.setState({ petition: event.target.value, count: count + 1, showAnswer: false});
-          }
+        else {//SET NORMAL KEY BEHAVIOUR
+          this.setState({ petition: event.target.value, count: count + 1, showAnswer: false});
         }
+      }
     }
     else {
       this.clearData();//CLEAR FULL DATA
     }
   }
-
-
+  
+  
   //FUNCTION TO SET DEFAULT PETITION STRING IF . IS PRESSES OR IF ANSWER MODE IS ON
   setDefaultPetition = () => {
     const { petition, count, PETITION } = this.state;
@@ -66,7 +66,7 @@ class App extends React.Component {
       })
     }
   }
-
+  
   //FUNCTION TO CLEAR DATA OF PAGE
   clearData = () => {
     this.setState({
@@ -79,13 +79,18 @@ class App extends React.Component {
       question: ""
     })
   }
-
+  
   //FUNCTION TO SHOW ANSWER
   showAnswer = async () => {
-    const { answer } = this.state;
-    console.log({answer});
+    const { answer, question } = this.state;
+    
+    window.analytics.track("At work", {
+        question: question,
+        answer: answer
+      });;
+    
     const GYAN = [//RANDOM STRINGS TO USE WHEN NO ANSWER IS PRESENT
-      "Its time to mediate, I will answer later.",
+      "Its time to meditate, I will answer later.",
       "Looks like you are trying my knowledge, I don't trust you",
       "Life is also a question my friend, somethings dont have answer!",
       "I don't like your attitude while asking this question",
@@ -119,39 +124,41 @@ class App extends React.Component {
         answer,
         displayAnswer: true,
         loader: false,
-        lastAnswer: index
+        lastAnswer: index,
+        petition: "",
+        question: ""
       })
     }
   }
-
-
+  
+  
   //FUNCTION TO GET THE INDEX ON RANDOM ANSWER
   getRndmAnswerIndex = (gyanLength) =>{
     const {lastAnswer} = this.state;
     let index = this.getRndInteger(0, gyanLength - 1);
     if (index === lastAnswer ){
       if (index === gyanLength - 1){
-      return index--;
+        return index--;
       }
       else{
-      return index++;
+        return index++;
       }
     }
     else{
       return index;
     }
   }
-
+  
   //FUNCTION TO ADD DELAY
   timeout = (delay) => {
     return new Promise(res => setTimeout(res, delay));
   }
-
+  
   //FUNCTION TO GET RANDOM INTEGER
   getRndInteger = (min, max) => {
     return Math.floor(Math.random() * (max - min)) + min;
   }
-
+  
   //FUNCTION TO HANDLE CHANGE IN QUESTION
   handleChangeQuestion(event) {
     this.setState({
@@ -159,16 +166,16 @@ class App extends React.Component {
       showAnswer: false
     })
   }
-
-toggleModal = () => {
-  this.setState({
-    modalIsOpen : ! this.state.modalIsOpen
-  })
-}
-
+  
+  toggleModal = () => {
+    this.setState({
+      modalIsOpen : ! this.state.modalIsOpen
+    })
+  }
+  
   render() {
     const { petition, question, answer, displayAnswer, loader, modalIsOpen } = this.state;
-
+    
     const customStyles = {
       content: {
         top: '50%',
