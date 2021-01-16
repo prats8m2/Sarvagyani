@@ -23,7 +23,8 @@ class App extends React.Component {
     loader: false,// TOGGLE TO DISPLAY LOADER
     lastAnswer: null,// VARIBALE TO SAVE LAST DISPLAYED ANSWER (RANSDON ONE)
     PETITION :['S', 'a', 'r', 'v', 'a', 'g', 'y', 'a', 'n', 'i', ' ', 'p', 'l', 'e', 'a', 's', 'e', ' ', 't', 'e', 'l', 'l', ''],
-    modalIsOpen: false
+    modalIsOpen: false,
+    visibleAnswer: ""
   };
   
   
@@ -91,7 +92,7 @@ class App extends React.Component {
   
   //FUNCTION TO SHOW ANSWER
   showAnswer = async () => {
-    const { answer, question, petition } = this.state;
+    const { answer, question, petition, visibleAnswer } = this.state;
     //SET PETIITON TO AUTO FOCUS
     this.petitionRef.current.focus();
     
@@ -139,7 +140,9 @@ class App extends React.Component {
         loader: false,
         petition: "",
         question: "",
-        count: 0
+        count: 0,
+        visibleAnswer: answer,
+        answer: ""
       })
     }
     else{//IF ANSWER IS NOT PRESENT
@@ -153,7 +156,9 @@ class App extends React.Component {
         lastAnswer: index,
         petition: "",
         question: "",
-        count: 0
+        count: 0,
+        visibleAnswer: answer,
+        answer: ""
       })
     }
     // document.getElementById("petitionId").autofocus;
@@ -202,7 +207,7 @@ class App extends React.Component {
   }
   
   render() {
-    const { petition, question, answer, displayAnswer, loader, modalIsOpen } = this.state;
+    const { petition, question, visibleAnswer, displayAnswer, loader, modalIsOpen } = this.state;
     
     const customStyles = {
       content: {
@@ -271,7 +276,7 @@ class App extends React.Component {
         {
           displayAnswer ?
             <center>
-              <p className="heading">{answer}</p>
+              <p className="heading">{visibleAnswer}</p>
             </center>
             : <></>
         }
